@@ -1,4 +1,4 @@
-package br.com.isaque;
+package br.com.isaque.jarvis.nucleo;
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {}
