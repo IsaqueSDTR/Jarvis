@@ -2,7 +2,6 @@ package br.com.isaque.jarvis.nucleo;
 
 import br.com.isaque.jarvis.entrada.EntradaDeComando;
 import br.com.isaque.jarvis.entrada.EntradaTeclado;
-import br.com.isaque.jarvis.modulos.Modulo;
 import br.com.isaque.jarvis.modulos.ModuloAmbienteEstudos;
 import br.com.isaque.jarvis.modulos.ModuloEco;
 import br.com.isaque.jarvis.saida.SaidaConsole;
@@ -13,8 +12,9 @@ public class Main {
         EntradaDeComando entrada = new EntradaTeclado();
         SaidaDeResposta saida = new SaidaConsole();
         Roteador roteador = new Roteador();
+        Configuracao config = new Configuracao("config.properties");
 
-        roteador.registrar("estudos", new ModuloAmbienteEstudos());
+        roteador.registrar("estudos", new ModuloAmbienteEstudos(config));
         roteador.registrar("eco", new ModuloEco());
 
         while (true) {
