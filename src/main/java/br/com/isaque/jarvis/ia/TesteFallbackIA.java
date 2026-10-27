@@ -5,25 +5,25 @@ public class TesteFallbackIA {
 
     public static void main(String[] args) {
 
-        ProvedorIA principal = pergunta -> {
+        ProvedorIA geminiSimulado = pergunta -> {
             throw new FalhaProvedorIA(
                     "Falha simulada no Gemini."
             );
         };
 
-        ProvedorIA alternativa = pergunta -> {
-            return "Resposta de teste do Ollama: " + pergunta;
-        };
+        ProvedorIA ollamaReal = new OllamaProvedorIA();
 
         ProvedorIA ia = new FallbackProvedorIA(
-                principal,
-                alternativa
+                geminiSimulado,
+                ollamaReal
         );
 
         String resposta = ia.perguntar(
-                "O que é Java?"
+                "Responda em português e de forma breve: " +
+                        "apresente-se como o provedor alternativo do Jarvis."
         );
 
+        System.out.println("Resposta recebida:");
         System.out.println(resposta);
     }
 }

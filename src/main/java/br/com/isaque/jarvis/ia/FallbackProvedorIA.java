@@ -1,3 +1,4 @@
+
 package br.com.isaque.jarvis.ia;
 
 public class FallbackProvedorIA implements ProvedorIA {
@@ -19,13 +20,20 @@ public class FallbackProvedorIA implements ProvedorIA {
             return principal.perguntar(pergunta);
 
         } catch (FalhaProvedorIA erroPrincipal) {
+
+            if (!erroPrincipal.permiteFallback()) {
+                throw erroPrincipal;
+            }
+
             try {
                 return alternativa.perguntar(pergunta);
 
             } catch (FalhaProvedorIA erroAlternativo) {
+                erroPrincipal.addSuppressed(erroAlternativo);
+
                 throw new FalhaProvedorIA(
                         "Os provedores de IA estão indisponíveis.",
-                        erroAlternativo
+                        erroPrincipal
                 );
             }
         }

@@ -37,6 +37,14 @@ public class OllamaProvedorIA implements ProvedorIA {
             corpo.put("stream", false);
 
             ArrayNode mensagens = corpo.putArray("messages");
+
+            ObjectNode mensagemSistema = mensagens.addObject();
+            mensagemSistema.put("role", "system");
+            mensagemSistema.put(
+                    "content",
+                    PersonalidadeJarvis.obterInstrucoes()
+            );
+
             ObjectNode mensagem = mensagens.addObject();
 
             mensagem.put("role", "user");
