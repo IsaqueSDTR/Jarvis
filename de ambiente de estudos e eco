@@ -1,0 +1,29 @@
+[33mcommit 3916d9893ee8822f2a7ed3fcc9debfc21c104a6b[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: IsaqueSDTR <isaqueds44@gmail.com>
+Date:   Mon Oct 26 19:26:34 2026 -0300
+
+    Esqueleto: interfaces, teclado, console e Main com laço
+
+[33mcommit ea31ce0c1a22610a9fd360d1ae41325fadddb701[m
+Author: IsaqueSDTR <isaqueds44@gmail.com>
+Date:   Mon Oct 26 18:21:42 2026 -0300
+
+    Cria pacotes e move Main para nucleo
+
+[33mcommit d582894e9ff8129aba7a62ace01fd5ca7afdb948[m
+Author: IsaqueSDTR <isaqueds44@gmail.com>
+Date:   Mon Oct 26 18:15:14 2026 -0300
+
+    Pacote em minúsculas
+
+[33mcommit 90e350557a7b72f1e52876202c1ac7051fda64e1[m
+Author: IsaqueSDTR <isaqueds44@gmail.com>
+Date:   Mon Oct 26 18:12:13 2026 -0300
+
+    Ajusta .gitignore e remove .idea
+
+[33mcommit 620b64221f97cdbd998e6a15a567b23929a86391[m
+Author: IsaqueSDTR <isaqueds44@gmail.com>
+Date:   Mon Oct 26 17:48:04 2026 -0300
+
+    Projeto inicial
