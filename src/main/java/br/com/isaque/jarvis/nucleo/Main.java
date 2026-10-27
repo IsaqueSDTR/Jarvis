@@ -12,23 +12,23 @@ public class Main {
     public static void main(String[] args) {
         EntradaDeComando entrada = new EntradaTeclado();
         SaidaDeResposta saida = new SaidaConsole();
-        Modulo estudos = new ModuloAmbienteEstudos();
-        Modulo eco = new ModuloEco();
+        Roteador roteador = new Roteador();
+
+        roteador.registrar("estudos", new ModuloAmbienteEstudos());
+        roteador.registrar("eco", new ModuloEco());
 
         while (true) {
             String comando = entrada.ouvir();
             if (comando.trim().equalsIgnoreCase("sair")) {
                 break;
             }
-            if (comando.trim().equalsIgnoreCase("estudos")) {
-                saida.falar(estudos.executar(comando));
-                continue;
+            String resposta = roteador.rotear(comando);
+            if (resposta == null) {
+                saida.falar("Você disse: " + comando);
             }
-            if (comando.toLowerCase().startsWith("eco ")) {
-                saida.falar(eco.executar(comando.substring(4)));
-                continue;
+            else {
+                saida.falar(resposta);
             }
-            saida.falar("Você disse: " + comando);
         }
     }
 }
