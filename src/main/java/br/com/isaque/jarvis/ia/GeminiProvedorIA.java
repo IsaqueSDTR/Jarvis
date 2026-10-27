@@ -33,7 +33,9 @@ public class GeminiProvedorIA implements ProvedorIA {
     @Override
     public String perguntar(String pergunta) {
         if (chaveApi == null || chaveApi.isBlank()) {
-            return "Erro: a variável GEMINI_API_KEY não foi configurada.";
+            throw new FalhaProvedorIA(
+                    "A variável GEMINI_API_KEY não foi configurada."
+            );
         }
 
         try {
@@ -58,10 +60,12 @@ public class GeminiProvedorIA implements ProvedorIA {
 
             if (resposta.statusCode() < 200
                     || resposta.statusCode() >= 300) {
-                return "Erro na API Gemini. Código HTTP: "
-                        + resposta.statusCode()
-                        + " | Detalhes: "
-                        + resposta.body();
+                throw new FalhaProvedorIA(
+                        "Erro na API Gemini. Código HTTP: "
+                                + resposta.statusCode()
+                                + " | Detalhes: "
+                                + resposta.body()
+                );
             }
 
             JsonNode raiz = json.readTree(resposta.body());
@@ -75,11 +79,15 @@ public class GeminiProvedorIA implements ProvedorIA {
             return texto.asText();
 
         } catch (IOException e) {
-            return "Erro ao comunicar com o Gemini: "
-                    + e.getMessage();
+            throw new FalhaProvedorIA(
+                    "Erro ao comunicar com o Gemini.", e
+            );
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            return "A comunicação com o Gemini foi interrompida.";
+
+            throw new FalhaProvedorIA(
+                    "A comunicação com o Gemini foi interrompida.", e
+            );
         }
     }
 }

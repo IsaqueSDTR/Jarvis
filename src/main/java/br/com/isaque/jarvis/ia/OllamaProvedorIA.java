@@ -56,26 +56,37 @@ public class OllamaProvedorIA implements ProvedorIA {
 
             if (resposta.statusCode() < 200
                     || resposta.statusCode() >= 300) {
-                return "Erro no Ollama. Código HTTP: "
-                        + resposta.statusCode();
+                throw new FalhaProvedorIA(
+                        "Erro no Ollama. Código HTTP: "
+                                + resposta.statusCode()
+                );
             }
 
             JsonNode raiz = json.readTree(resposta.body());
             JsonNode conteudo = raiz.path("message").path("content");
 
             if (!conteudo.isTextual()) {
-                return "O Ollama não retornou uma resposta em texto.";
+                throw new FalhaProvedorIA(
+                        "O Ollama não retornou uma resposta em texto."
+                );
             }
 
             return conteudo.asText();
 
         } catch (IOException e) {
-            return "Não foi possível conectar ao Ollama. "
-                    + "Verifique se ele está em execução.";
+            throw new FalhaProvedorIA(
+                    "Não foi possível conectar ao Ollama. "
+                            + "Verifique se ele está em execução.",
+                    e
+            );
 
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            return "A comunicação com o Ollama foi interrompida.";
+
+            throw new FalhaProvedorIA(
+                    "A comunicação com o Ollama foi interrompida.",
+                    e
+            );
         }
     }
 }
