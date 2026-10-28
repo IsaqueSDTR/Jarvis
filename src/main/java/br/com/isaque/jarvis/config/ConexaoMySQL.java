@@ -10,6 +10,7 @@ public final class ConexaoMySQL {
     private static final String URL =
             "jdbc:mysql://localhost:3306/jarvis_db"
                     + "?useSSL=false"
+                    + "&allowPublicKeyRetrieval=true"
                     + "&serverTimezone=America/Sao_Paulo"
                     + "&characterEncoding=UTF-8";
 
