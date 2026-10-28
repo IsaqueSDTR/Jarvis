@@ -2,7 +2,7 @@
 package br.com.isaque.jarvis;
 
 import br.com.isaque.jarvis.memoria.MemoriaRepository;
-
+import br.com.isaque.jarvis.memoria.MemoriaService;
 import java.sql.SQLException;
 
 public class TesteMemoria {
@@ -11,6 +11,12 @@ public class TesteMemoria {
         MemoriaRepository memoria = new MemoriaRepository();
 
         try {
+            MemoriaService service = new MemoriaService();
+
+            service.salvarMemoria("pessoal", "cidade", "Contagem");
+            service.salvarMemoria("pessoal", "curso", "ADS");
+
+            System.out.println(service.listarPorCategoria("pessoal"));
             memoria.salvar(
                     "teste",
                     "memoria_persistente",
@@ -25,6 +31,10 @@ public class TesteMemoria {
             System.out.println(
                     resultado.orElse("Memória não encontrada.")
             );
+            memoria.salvar("teste", "cidade", "Contagem");
+            memoria.salvar("teste", "curso", "ADS");
+
+            System.out.println(memoria.listarPorCategoria("teste"));
 
         } catch (SQLException e) {
             System.err.println(
