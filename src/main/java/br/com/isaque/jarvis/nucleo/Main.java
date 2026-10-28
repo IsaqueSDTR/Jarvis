@@ -11,6 +11,8 @@ import br.com.isaque.jarvis.ia.GeminiProvedorIA;
 import br.com.isaque.jarvis.ia.OllamaProvedorIA;
 import br.com.isaque.jarvis.ia.ProvedorIA;
 import br.com.isaque.jarvis.ia.FalhaProvedorIA;
+import br.com.isaque.jarvis.memoria.MemoriaService;
+import br.com.isaque.jarvis.modulos.ModuloMemoria;
 
 public class Main {
     public static void main(String[] args) {
@@ -26,6 +28,7 @@ public class Main {
 
         roteador.registrar("estudos", new ModuloAmbienteEstudos(config));
         roteador.registrar("eco", new ModuloEco());
+        roteador.registrar("memoria", new ModuloMemoria(new MemoriaService()));
 
         while (true) {
             String comando = entrada.ouvir();
