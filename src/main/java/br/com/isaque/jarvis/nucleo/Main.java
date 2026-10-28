@@ -10,6 +10,7 @@ import br.com.isaque.jarvis.ia.FallbackProvedorIA;
 import br.com.isaque.jarvis.ia.GeminiProvedorIA;
 import br.com.isaque.jarvis.ia.OllamaProvedorIA;
 import br.com.isaque.jarvis.ia.ProvedorIA;
+import br.com.isaque.jarvis.ia.FalhaProvedorIA;
 
 public class Main {
     public static void main(String[] args) {
@@ -28,15 +29,23 @@ public class Main {
 
         while (true) {
             String comando = entrada.ouvir();
+
             if (comando.trim().equalsIgnoreCase("sair")) {
                 break;
             }
-            String resposta = roteador.rotear(comando);
-            if (resposta == null) {
-                saida.falar("Você disse: " + comando);
-            } else {
-                saida.falar(resposta);
+
+            if (comando.isBlank()) {
+                continue;
             }
+
+            String resposta;
+            try {
+                resposta = roteador.rotear(comando);
+            } catch (FalhaProvedorIA e) {
+                resposta = "Não consegui falar com a IA agora: " + e.getMessage();
+            }
+
+            saida.falar(resposta);
         }
     }
 }
