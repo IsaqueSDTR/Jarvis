@@ -8,10 +8,10 @@ public class Configuracao {
     private Properties propriedades = new Properties();
 
     public Configuracao(String caminho) {
-        try (FileInputStream arquivo = new FileInputStream("config.properties")) {
+        try (FileInputStream arquivo = new FileInputStream(caminho)) {
             propriedades.load(arquivo);
         } catch (IOException e) {
-            System.out.println("Não consegui ler " + caminho);
+            System.out.println("Não consegui ler " + caminho + ": " + e.getMessage());
         }
     }
 
