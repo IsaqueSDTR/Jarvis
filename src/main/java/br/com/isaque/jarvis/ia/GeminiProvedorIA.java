@@ -4,7 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
+import br.com.isaque.jarvis.memoria.MemoriaService;
+import java.sql.SQLException;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -24,8 +25,8 @@ public class GeminiProvedorIA implements ProvedorIA {
     private final HttpClient cliente;
     private final ObjectMapper json;
     private final String chaveApi;
+    private final MemoriaService memoria;
 
-    // Histórico mantido enquanto esta instância estiver ativa.
     private final List<MensagemConversa> historico = new ArrayList<>();
 
     private record MensagemConversa(String papel, String texto) {
@@ -39,6 +40,8 @@ public class GeminiProvedorIA implements ProvedorIA {
                 .build();
 
         this.json = new ObjectMapper();
+
+        this.memoria = new MemoriaService();
     }
 
     @Override
@@ -60,10 +63,23 @@ public class GeminiProvedorIA implements ProvedorIA {
             ArrayNode partesInstrucao =
                     instrucaoSistema.putArray("parts");
 
-            partesInstrucao.addObject().put(
-                    "text",
-                    PersonalidadeJarvis.obterInstrucoes()
-            );
+            String instrucoes = PersonalidadeJarvis.obterInstrucoes();
+
+            try {
+                String contexto = memoria.montarContexto();
+
+                if (!contexto.isBlank()) {
+                    instrucoes += "\n\n" + contexto;
+                }
+
+            } catch (SQLException e) {
+                System.err.println(
+                        "Aviso: não foi possível carregar as memórias: "
+                                + e.getMessage()
+                );
+            }
+
+            partesInstrucao.addObject().put("text", instrucoes);
 
             // 2. Envia o histórico da conversa.
             ArrayNode contents = corpo.putArray("contents");
@@ -76,7 +92,6 @@ public class GeminiProvedorIA implements ProvedorIA {
                 );
             }
 
-            // 3. Adiciona a pergunta atual.
             adicionarMensagem(contents, "user", pergunta);
 
             HttpRequest requisicao = HttpRequest.newBuilder()
@@ -128,7 +143,6 @@ public class GeminiProvedorIA implements ProvedorIA {
 
             String respostaJarvis = texto.asText();
 
-            // 4. Salva a interação após receber uma resposta válida.
             historico.add(
                     new MensagemConversa("user", pergunta)
             );

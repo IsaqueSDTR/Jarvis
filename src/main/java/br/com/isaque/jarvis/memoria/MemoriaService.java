@@ -65,6 +65,28 @@ public class MemoriaService {
         return repositorio.listarPorCategoria(categoria.trim());
     }
 
+
+    public String montarContexto() throws SQLException {
+
+        List<String> memorias = listarPorCategoria("pessoal");
+
+        if (memorias.isEmpty()) {
+            return "";
+        }
+
+        StringBuilder texto = new StringBuilder();
+
+        texto.append("Informações que você sabe sobre Isaque:\n");
+
+        for (String memoria : memorias) {
+            texto.append("- ")
+                    .append(memoria)
+                    .append("\n");
+        }
+
+        return texto.toString();
+    }
+
     private void validarTexto(String texto, String campo) {
         if (texto == null || texto.isBlank()) {
             throw new IllegalArgumentException(

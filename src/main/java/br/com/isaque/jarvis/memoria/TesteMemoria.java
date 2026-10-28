@@ -1,45 +1,37 @@
 
-package br.com.isaque.jarvis;
+package br.com.isaque.jarvis.memoria;
 
-import br.com.isaque.jarvis.memoria.MemoriaRepository;
-import br.com.isaque.jarvis.memoria.MemoriaService;
 import java.sql.SQLException;
 
 public class TesteMemoria {
 
     public static void main(String[] args) {
-        MemoriaRepository memoria = new MemoriaRepository();
+        testarMontarContexto();
+    }
+
+    public static void testarMontarContexto() {
+        MemoriaService memoria = new MemoriaService();
 
         try {
-            MemoriaService service = new MemoriaService();
+            String contexto = memoria.montarContexto();
 
-            service.salvarMemoria("pessoal", "cidade", "Contagem");
-            service.salvarMemoria("pessoal", "curso", "ADS");
+            System.out.println("=== CONTEXTO DO JARVIS ===");
 
-            System.out.println(service.listarPorCategoria("pessoal"));
-            memoria.salvar(
-                    "teste",
-                    "memoria_persistente",
-                    "O banco de memória do Jarvis está funcionando."
-            );
+            if (contexto.isBlank()) {
+                System.out.println(
+                        "Nenhuma memória encontrada na categoria pessoal."
+                );
+            } else {
+                System.out.println(contexto);
+            }
 
-            var resultado = memoria.buscar(
-                    "teste",
-                    "memoria_persistente"
-            );
-
-            System.out.println(
-                    resultado.orElse("Memória não encontrada.")
-            );
-            memoria.salvar("teste", "cidade", "Contagem");
-            memoria.salvar("teste", "curso", "ADS");
-
-            System.out.println(memoria.listarPorCategoria("teste"));
+            System.out.println("==========================");
 
         } catch (SQLException e) {
             System.err.println(
-                    "Erro ao testar a memória: " + e.getMessage()
+                    "Erro ao consultar as memórias: " + e.getMessage()
             );
+            e.printStackTrace();
         }
     }
 }
