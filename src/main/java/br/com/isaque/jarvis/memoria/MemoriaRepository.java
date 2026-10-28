@@ -8,6 +8,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
+import java.util.List;
+import java.util.ArrayList;
 
 public class MemoriaRepository {
 
@@ -36,6 +38,33 @@ public class MemoriaRepository {
 
             comando.executeUpdate();
         }
+    }
+
+    public List<String> listarPorCategoria(String categoria) throws SQLException {
+
+        String sql = """
+            SELECT chave, valor
+            FROM memorias
+            WHERE categoria = ?
+            """;
+
+        List<String> memorias = new ArrayList<>();
+
+        try (Connection conexao = ConexaoMySQL.obterConexao();
+             PreparedStatement comando = conexao.prepareStatement(sql)) {
+
+            comando.setString(1, categoria);
+
+            try (ResultSet resultado = comando.executeQuery()) {
+                while (resultado.next()) {
+                    String chave = resultado.getString("chave");
+                    String valor = resultado.getString("valor");
+                    memorias.add(chave + ": " + valor);
+                }
+            }
+        }
+
+        return memorias;
     }
 
     public Optional<String> buscar(

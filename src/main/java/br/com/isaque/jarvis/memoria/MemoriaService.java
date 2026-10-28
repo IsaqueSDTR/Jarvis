@@ -3,6 +3,7 @@ package br.com.isaque.jarvis.memoria;
 
 import java.sql.SQLException;
 import java.util.Optional;
+import java.util.List;
 
 public class MemoriaService {
 
@@ -55,6 +56,13 @@ public class MemoriaService {
                 categoria.trim(),
                 chave.trim()
         );
+    }
+
+    public List<String> listarPorCategoria(String categoria) throws SQLException {
+
+        validarTexto(categoria, "A categoria");
+
+        return repositorio.listarPorCategoria(categoria.trim());
     }
 
     private void validarTexto(String texto, String campo) {
