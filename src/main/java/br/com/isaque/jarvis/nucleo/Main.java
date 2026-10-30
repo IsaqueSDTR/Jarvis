@@ -4,6 +4,7 @@ import br.com.isaque.jarvis.entrada.EntradaDeComando;
 import br.com.isaque.jarvis.entrada.EntradaTeclado;
 import br.com.isaque.jarvis.modulos.ModuloAmbienteEstudos;
 import br.com.isaque.jarvis.modulos.ModuloEco;
+import br.com.isaque.jarvis.modulos.ModuloFinancas;
 import br.com.isaque.jarvis.saida.SaidaConsole;
 import br.com.isaque.jarvis.saida.SaidaDeResposta;
 import br.com.isaque.jarvis.ia.FallbackProvedorIA;
@@ -29,6 +30,7 @@ public class Main {
         roteador.registrar("estudos", new ModuloAmbienteEstudos(config));
         roteador.registrar("eco", new ModuloEco());
         roteador.registrar("memoria", new ModuloMemoria(new MemoriaService()));
+        roteador.registrar("planilhas", new ModuloFinancas(config));
 
         while (true) {
             String comando = entrada.ouvir();
